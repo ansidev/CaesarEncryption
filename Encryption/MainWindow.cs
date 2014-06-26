@@ -15,6 +15,7 @@ namespace CaesarEncryption
         public MainWindow()
         {
             InitializeComponent();
+            this.MaximizeBox = false;
         }
         private string ReverseString(string s)
         {
@@ -110,6 +111,9 @@ namespace CaesarEncryption
                 case 'z':
                     number = 25;
                     break;
+                case ' ':
+                    number = 26;
+                    break;
                 default:
                     break;
             }
@@ -198,6 +202,9 @@ namespace CaesarEncryption
                 case 25:
                     letter = 'z';
                     break;
+                case 26:
+                    letter = ' ';
+                    break;
                 default:
                     break;
             }
@@ -210,22 +217,75 @@ namespace CaesarEncryption
             //MessageBox.Show(s);
             foreach (char letter in input)
             {
-                output += NumberToLetter((LetterToNumber(letter) + key) % 26);
+                if (letter.CompareTo('a') != 0 &&
+                    letter.CompareTo('b') != 0 &&
+                    letter.CompareTo('c') != 0 &&
+                    letter.CompareTo('d') != 0 &&
+                    letter.CompareTo('e') != 0 &&
+                    letter.CompareTo('f') != 0 &&
+                    letter.CompareTo('g') != 0 &&
+                    letter.CompareTo('h') != 0 &&
+                    letter.CompareTo('i') != 0 &&
+                    letter.CompareTo('j') != 0 &&
+                    letter.CompareTo('k') != 0 &&
+                    letter.CompareTo('l') != 0 &&
+                    letter.CompareTo('m') != 0 &&
+                    letter.CompareTo('n') != 0 &&
+                    letter.CompareTo('o') != 0 &&
+                    letter.CompareTo('p') != 0 &&
+                    letter.CompareTo('q') != 0 &&
+                    letter.CompareTo('r') != 0 &&
+                    letter.CompareTo('s') != 0 &&
+                    letter.CompareTo('t') != 0 &&
+                    letter.CompareTo('u') != 0 &&
+                    letter.CompareTo('v') != 0 &&
+                    letter.CompareTo('w') != 0 &&
+                    letter.CompareTo('x') != 0 &&
+                    letter.CompareTo('y') != 0 &&
+                    letter.CompareTo('z') != 0)
+                {
+                    output += letter;
+                }
+                else
+                {
+                    output += NumberToLetter((LetterToNumber(letter) + key) % 26);
+                }
             }
             return output;
         }
-        private void btnEncrypt_Click(object sender, EventArgs e)
+        private void RefreshDataGridView()
         {
-            this.tbxOutput.Text = "";
-            for (int i = 1; i < 26; i++)
+            this.tbxReverseInput.Text = ReverseString(this.tbxInput.Text);
+            if (string.IsNullOrWhiteSpace(this.tbxInput.Text))
             {
-                this.tbxOutput.Text += "k = " + i + ":\t" + CaesarCrypt(i) + "\t" + ReverseString(CaesarCrypt(i)) + "\r\n";
+                MessageBox.Show("Please enter a string to encrypt! Thank you!");
+            }
+            else
+            {
+                if (dgvOutput.DataSource != null)
+                {
+                    dgvOutput.DataSource = null;
+                }
+                else
+                {
+                    dgvOutput.Rows.Clear();
+                }
+                for (int i = 1; i < 26; i++)
+                {
+                    dgvOutput.Rows.Add(i, CaesarCrypt(i), ReverseString(CaesarCrypt(i)));
+                }
             }
         }
-
-        private void btnDecrypt_Click(object sender, EventArgs e)
+        private void btnEncrypt_Click(object sender, EventArgs e)
         {
-
+            RefreshDataGridView();
+        }
+        private void tbxInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                RefreshDataGridView();
+            }
         }
     }
 }
