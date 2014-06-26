@@ -1,4 +1,4 @@
-CaesarEncryption
+Encryption
 ================
 
-Caesar Encryption Program
+Encryption Program
